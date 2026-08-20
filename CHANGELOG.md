@@ -1,5 +1,9 @@
 ## [Auto-Updated] - 2026-08-20
 
+* feat(quirks): rebuild quirks engine with cross-referenced scoring and fix shell pre-commit hook (c26eba1)
+
+## [Auto-Updated] - 2026-08-20
+
 * refactor(quirks): rebuild quirks module with cascading weighted selection and Dict[str, str] interface (dbdc171)
 
 ## [Auto-Updated] - 2026-08-20

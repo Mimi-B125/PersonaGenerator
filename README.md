@@ -67,6 +67,36 @@ graph TD
 ## Project Architecture
 
 <!-- TREE_START -->
+```text
+PersonaGenerator/
+├── 📁 MD/
+│   ├── 📁 2024/
+│   │   └── 📄 Zoe_persona.md.txt
+│   └── 📁 2026/
+├── 🙈 .gitignore
+├── 🐍 __init__.py
+├── 🐍 careers_and_finance.py
+├── 🐍 caregiver_profiles.py
+├── 🐍 coachable_topics.py
+├── 🐍 culture_and_geography.py
+├── 🐍 enneagram_psychodynamics.py
+├── 🐍 fears_and_insecurities.py
+├── 🐍 health_profiles.py
+├── 🐍 hobbies.py
+├── 🐍 markdown_generator.py
+├── 🐍 moral_compass.py
+├── 🐍 names.py
+├── 🐍 PersonaGenerator.py
+├── 🐍 physical_traits.py
+├── 🐍 quirks.py
+├── 📝 README.md
+├── 🐍 README_updater.py
+├── 🐍 sexual_preferences.py
+├── 🐍 skills_and_talents.py
+├── 🐍 social_and_lifestyle.py
+├── 🐍 surnames.py
+└── 📜 update_readme_tree.ps1
+```
 <!-- TREE_END -->
 
 ## **Quick Start**

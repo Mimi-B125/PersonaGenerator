@@ -24,8 +24,7 @@ DEFAULT_EXCLUDES: Set[str] = {
     "venv",
     "dist",
     "build",
-    "*.pyc",
-    "*.md"  # Prevents recursive tree bloat from generated markdown outputs
+    "*.pyc"
 }
 
 # Visual Extension Indicators for LLM/Python Codebase
@@ -54,7 +53,6 @@ def load_gitignore_patterns(root_dir: Path) -> Set[str]:
             for line in f:
                 line = line.strip()
                 if line and not line.startswith("#"):
-                    # Strip trailing slashes for clean path matching
                     patterns.add(line.rstrip("/"))
                     
     return patterns
@@ -63,7 +61,11 @@ def load_gitignore_patterns(root_dir: Path) -> Set[str]:
 def should_exclude(path: Path, root_dir: Path, exclude_patterns: Set[str]) -> bool:
     """
     Checks if a given path matches any exclusion or gitignore rules.
+    Explicitly protects README.md from being self-excluded.
     """
+    if path.name.lower() == "readme.md":
+        return False
+
     rel_path = path.relative_to(root_dir)
     name = path.name
 
@@ -99,7 +101,6 @@ def generate_ascii_tree(
     file_count = 0
     dir_count = 0
 
-    # Filter directory contents based on active exclusion rules
     contents = [
         p for p in sorted(dir_path.iterdir(), key=lambda x: (not x.is_dir(), x.name.lower()))
         if not should_exclude(p, root_dir, exclude_patterns)
@@ -145,9 +146,9 @@ def update_readme():
     tree_structure = "\n".join(tree_lines)
     tree_block = f"```text\nPersonaGenerator/\n{tree_structure}\n```"
 
-    # 2. Read Existing Readme Data
+    # 2. Read Existing Readme Data and Normalize Line Endings
     with open(readme_path, "r", encoding="utf-8") as f:
-        content = f.read()
+        content = f.read().replace("\r\n", "\n")
 
     # 3. Check and Replace Content Markers
     start_marker = "<!-- TREE_START -->"
@@ -155,8 +156,9 @@ def update_readme():
 
     if start_marker not in content or end_marker not in content:
         print(f"⚠️ Warning: Target markers `{start_marker}` and `{end_marker}` not found in README.md.")
-        print("Please insert the comment markers inside README.md where you want the tree rendered.")
-        sys.exit(0)
+        print("Please ensure README.md contains the exact comment lines:")
+        print("<!-- TREE_START -->\n<!-- TREE_END -->")
+        sys.exit(1)
 
     pattern = re.compile(
         f"{re.escape(start_marker)}.*?{re.escape(end_marker)}", 
@@ -167,7 +169,7 @@ def update_readme():
     new_content = pattern.sub(updated_block, content)
 
     # 4. Atomic Write Back
-    with open(readme_path, "w", encoding="utf-8") as f:
+    with open(readme_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(new_content)
 
     print("🎉 Success! Updated project architecture tree inside README.md.")
