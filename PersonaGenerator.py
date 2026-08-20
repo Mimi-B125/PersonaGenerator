@@ -123,10 +123,12 @@ class PersonaGenerator:
         personality['quirk'] = get_contextual_quirk(personality, fashion_sense)
         personality['body_image_perception'] = get_body_perception_narrative(personality, physical)
 
-        # SEX PREFERENCES & TOPICS
+        # SEX PREFERENCES & KINK PROFILE GENERATION
         sexual_preferences = get_weighted_sexual_preferences(
             orientation=orientation, 
-            personality=personality
+            personality=personality,
+            age=assigned_age,
+            sex=sex
         )
         
         surname = get_random_surname()
