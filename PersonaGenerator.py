@@ -91,6 +91,15 @@ class PersonaGenerator:
 
     def generate_persona(self) -> Persona:
         # 1. Blueprint-based Identity framework
+        # =====================================================================
+        # IDENTITY BLUEPRINT CONFIGURATION
+        # Each blueprint tuple MUST follow this strict 4-item array sequence:
+        # Index 0: Gender Identity Label -> String used in the final markdown output.
+        # Index 1: Biological Sex -> String ("male" or "female") used for physical context.
+        # Index 2: Name Bank Group -> String ("man", "woman", or "non-binary") sent to names.py.
+        # Index 3: Orientation Pool -> List of strings representing valid sexual preferences.
+        # =====================================================================
+
         blueprints = [
             ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
             ("cisgender man", "male", "man", ["heterosexual", "homosexual", "bisexual", "pansexual"]),
