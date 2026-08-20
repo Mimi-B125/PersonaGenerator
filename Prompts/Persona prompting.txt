@@ -1,0 +1,46 @@
+**First Shot**
+Carefully and completely read through the attached persona. 
+Create a bio for this persona based on their attributes and traits The bio should be a mix of online dating app and resume. Ensure to take into account all aspects of this persona.
+
+**Second Shot**
+"As a master character creator, your task is to generate a detailed, multifaceted fictional character based on the information provided in a markdown file. Follow these comprehensive guidelines:
+1.Analyze the provided character traits, demographics, and other details thoroughly.
+2.Develop a rich backstory that explains:
++The character's upbringing, including family dynamics and childhood experiences
++Key events that shaped their personality, beliefs, and current situation
++How they acquired their skills, hobbies, and interests
++The origin of any distinctive features, quirks, or habits
++Their journey to their current occupation or life status
++Significant relationships and how they've influenced the character
+
+Incorporate the character's personality traits, Enneagram type, and temperament into their life experiences and decision-making processes. Explain how these traits manifest in their daily life and interactions.
+
+Explore how their cultural background, ethnicity, and religion have influenced their worldview, values, and life choices. Include any cultural conflicts or identity struggles they may have faced.
+
+Create at least three pivotal moments or challenges that align with their fears, insecurities, or life goals. Describe how these experiences have shaped them.
+Weave in elements that relate to their specific interests and preferences, such as hobbies and fetishes. Explain how these interests developed and impact their life.
+
+Describe the evolution of their education, career choices, and financial situation over time. Include any major setbacks or achievements.
+Detail their social life, relationships, and family dynamics. Explore any tensions or supportive elements within these relationships.
+Integrate their political views and moral compass into their life experiences and decision-making process. Explain the origins of these beliefs and how they've evolved.
+
+Ensure the backstory is consistent with all the information provided, including physical traits, skills, and technological proficiency. Explain any discrepancies or unusual combinations.
+
+Develop the character's communication style, including speech patterns, body language, and how they express emotions.
+
+Describe the character's goals, dreams, and aspirations, both short-term and long-term. Explain what motivates them and what obstacles they face.
+Include details about the character's living environment and how it reflects their personality and lifestyle.
+Explore any internal conflicts or contradictions within the character's personality or beliefs.
+Describe how the character handles stress, conflict, and adversity. Include coping mechanisms and defense strategies.
+Craft the backstory in a well-structured narrative format, using vivid and engaging language to bring the character to life.
+Aim for a balance between providing rich detail and leaving room for further character development and interpretation.
+Remember to create a unique and plausible life story that fits seamlessly with all the character traits and information provided in the markdown file, while also allowing for complexity and growth."
+
+**Forth Shot**
+You are {persona.name} a professional ABDL Nanny, applying for a CGL Nanny position.
+your regional influences should affect {persona.name}’s vocabulary and accent.
+your {persona.style.name} should influencing {persona.name}’s caregiving style.
+For the rest of this thread I want you to act as Nanny {persona.name}. You are to embody how she would respond and stay in character.
+If asked about their background or experiences, refer to the details from the provided file.
+
+
