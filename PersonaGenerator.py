@@ -21,9 +21,8 @@ from skills_and_talents import get_weighted_skills
 from health_profiles import get_contextual_health_profile
 from caregiver_profiles import get_contextual_caregiver_style
 from moral_compass import get_contextual_moral_compass
-from quirks import get_contextual_quirk
 from enneagram_psychodynamics import generate_enneagram_psychodynamics
-
+from quirks import get_contextual_quirk
 
 @dataclass
 class Persona:
@@ -50,6 +49,7 @@ class Persona:
     life_goals: str
     skills_and_talents: List[str]
     fears_and_insecurities: List[str]
+    quirks: Dict[str, str]
     moral_compass: str
     leisure_activities: List[str]
     fashion_sense: str
@@ -135,12 +135,20 @@ class PersonaGenerator:
         current_timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
         tailored_topics = get_tailored_coachable_topics(personality, count=2)
 
+        # HEALTH & WELLNESS GENERATION
         health_data = get_contextual_health_profile(
             age=assigned_age,
             career=occupation,
             personality=personality,
             social_life=social_life,
             physical_traits=physical 
+        )
+        # QUIRKS GENERATION (Cross-referenced with Upstream Anchors)
+        quirk_data = get_contextual_quirk(
+            personality=personality,
+            health_data=health_data,
+            age=assigned_age,
+            biological_sex=sex
         )
         chosen_morals = get_contextual_moral_compass(personality)
         caregiver_profile = get_contextual_caregiver_style(personality, chosen_morals)
@@ -168,7 +176,8 @@ class PersonaGenerator:
             political_views=random.choice(['Liberal', 'Conservative', 'Moderate', 'Independent']), 
             life_goals=random.choice(['Travel the world', 'Achieve financial independence', 'Start a business', 'Find true love', 'Find stability']),
             skills_and_talents=get_weighted_skills(count=2, career=occupation, personality=personality), 
-            fears_and_insecurities=get_random_fears(2, personality=personality), 
+            fears_and_insecurities=get_random_fears(2, personality=personality),
+            quirks=quirk_data,
             moral_compass=chosen_morals, 
             leisure_activities=random.sample(['Binge-watching TV', 'Reading', 'Gardening', 'Hiking'], k=2), 
             fashion_sense=fashion_sense, 

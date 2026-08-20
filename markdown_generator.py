@@ -1,33 +1,49 @@
-def generate_persona_markdown(persona) -> str:
+"""
+markdown_generator.py
+
+Provides structured markdown string generation for Persona objects,
+formatting character identity fields into scannable markdown sections.
+"""
+
+from typing import Any
+
+
+def generate_persona_markdown(persona: Any) -> str:
     """
     Generates a structured markdown string for a given persona object.
+
+    Args:
+        persona: The constructed Persona dataclass instance containing
+                 all character traits and psychological attributes.
+
+    Returns:
+        str: Fully formatted markdown document representing the persona profile.
     """
     markdown = f"# Persona: {persona.name} {persona.surname}\n"
     markdown += f"**Profile Tracking Token:** [ID-{persona.generation_time}]\n\n"
-    
+
     markdown += "## Physical Traits\n"
     for trait, value in persona.physical_traits.items():
         markdown += f"- **{trait.replace('_', ' ').capitalize()}:** {value}\n"
-    
+
     markdown += "\n## Personality Traits\n"
     for trait, value in persona.personality.items():
         markdown += f"- **{trait.replace('_', ' ').capitalize()}:** {value}\n"
-    
+
     markdown += f"\n- **Caregiver Style:** {persona.caregiver_style}\n"
-    
+
     markdown += "\n## Gender and Biological Sex\n"
     markdown += f"- **Age:** {persona.age}\n"
     markdown += f"- **Gender Identity:** {persona.gender}\n"
     markdown += f"- **Biological Sex:** {persona.sex}\n"
     markdown += f"- **Sexual Orientation:** {persona.orientation}\n"
-    
-    markdown += f"\n## Region of Origin\n- **Region:** {persona.region}\n"
-    
-    markdown += "\n## Kink Preferences\n"
-    for item in persona.kink_preferences:
-        markdown += f"- **{item['preference']}:** {item['description']} (Intensity: {item['intensity']}/10, Frequency: {item['frequency']})\n"
 
-    
+    markdown += f"\n## Region of Origin\n- **Region:** {persona.region}\n"
+
+    markdown += "\n## Kink Preferences\n"
+    for preference, description in persona.kink_preferences.items():
+        markdown += f"- **{preference.replace('_', ' ').capitalize()}:** {description}\n"
+
     markdown += "\n## Hobbies\n"
     for hobby in persona.hobbies:
         markdown += f"- {hobby}\n"
@@ -47,6 +63,10 @@ def generate_persona_markdown(persona) -> str:
     markdown += "\n## Health\n"
     for key, value in persona.health.items():
         markdown += f"- **{key.replace('_', ' ').capitalize()}:** {value}\n"
+        
+    markdown += "\n## Private Quirks & Compulsions\n"
+    for key, value in persona.quirks.items():
+        markdown += f"- **{key}:** {value}\n"
 
     markdown += f"\n## Political Views and Life Goals\n- **Political Views:** {persona.political_views}\n- **Life Goals:** {persona.life_goals}\n"
 

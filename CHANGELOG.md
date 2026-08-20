@@ -1,5 +1,13 @@
 ## [Auto-Updated] - 2026-08-20
 
+* fix(repo): unignore core docs and sync sexual_preferences updates (4e86196)
+
+## [Auto-Updated] - 2026-08-20
+
+* fix(repo): unignore core docs and sync sexual_preferences updates (4e86196)
+
+## [Auto-Updated] - 2026-08-20
+
 * fix(repo): unignore CHANGELOG.md and core documentation files (96377fa)
 
 ## [Auto-Updated] - 2026-08-20
