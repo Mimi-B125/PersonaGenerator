@@ -150,9 +150,7 @@ class PersonaGenerator:
             gender=gender, 
             sex=sex, 
             orientation=orientation,
-            
-            caregiver_style=random.choice(self.CARE_GIVER_STYLE), 
-            
+            caregiver_style=caregiver_profile,
             physical_traits=physical, 
             personality=personality, 
             region=region, 
