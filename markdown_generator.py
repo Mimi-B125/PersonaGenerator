@@ -1,19 +1,23 @@
 def generate_persona_markdown(persona) -> str:
-    markdown = f"# Persona: {persona.name}\n\n"
+    """
+    Generates a structured markdown string for a given persona object.
+    """
+    markdown = f"# Persona: {persona.name} {persona.surname}\n"
+    markdown += f"**Profile Tracking Token:** [ID-{persona.generation_time}]\n\n"
     
     markdown += "## Physical Traits\n"
     for trait, value in persona.physical_traits.items():
-        markdown += f"- **{trait.capitalize()}:** {value}\n"
+        markdown += f"- **{trait.replace('_', ' ').capitalize()}:** {value}\n"
     
     markdown += "\n## Personality Traits\n"
     for trait, value in persona.personality.items():
-        markdown += f"- **{trait.capitalize()}:** {value}\n"
+        markdown += f"- **{trait.replace('_', ' ').capitalize()}:** {value}\n"
     
     markdown += f"\n- **Caregiver Style:** {persona.caregiver_style}\n"
     
     markdown += "\n## Gender and Biological Sex\n"
     markdown += f"- **Gender Identity:** {persona.gender}\n"
-    markdown += f"- **Sex:** {persona.sex}\n"
+    markdown += f"- **Biological Sex:** {persona.sex}\n"
     markdown += f"- **Sexual Orientation:** {persona.orientation}\n"
     
     markdown += f"\n## Region of Origin\n- **Region:** {persona.region}\n"
@@ -34,13 +38,13 @@ def generate_persona_markdown(persona) -> str:
 
     markdown += "\n## Social Life\n"
     for key, value in persona.social_life.items():
-        markdown += f"- **{key.capitalize()}:** {value}\n"
+        markdown += f"- **{key.replace('_', ' ').capitalize()}:** {value}\n"
 
     markdown += f"\n## Financial Situation\n- **Income Level:** {persona.financial_situation}\n"
 
     markdown += "\n## Health\n"
     for key, value in persona.health.items():
-        markdown += f"- **{key.capitalize()}:** {value}\n"
+        markdown += f"- **{key.replace('_', ' ').capitalize()}:** {value}\n"
 
     markdown += f"\n## Political Views and Life Goals\n- **Political Views:** {persona.political_views}\n- **Life Goals:** {persona.life_goals}\n"
 
@@ -62,5 +66,5 @@ def generate_persona_markdown(persona) -> str:
     for topic in persona.coachable_topics:
         markdown += f"- {topic}\n"
 
-    markdown += f"\n## Fashion Sense & Tech Use\n- **Fashion:** {persona.fashion_sense}\n- **Tech Use:** {persona.technology_use}\n"
+    markdown += f"\n## Fashion Sense & Tech Use\n- **Fashion Sense:** {persona.fashion_sense}\n- **Technology Use:** {persona.technology_use}\n"
     return markdown

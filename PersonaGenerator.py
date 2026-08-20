@@ -11,6 +11,7 @@ from names import get_random_name_by_gender
 from hobbies import get_random_hobbies
 from fears_and_insecurities import get_random_fears
 from markdown_generator import generate_persona_markdown
+from surnames import get_random_surname
 
 # New Attribute Modules
 from careers_and_finance import get_random_career_profile
@@ -18,13 +19,10 @@ from culture_and_geography import get_random_cultural_profile
 from social_and_lifestyle import get_random_lifestyle_profile
 
 @dataclass
-class Trait:
-    name: str
-    description: str
-    
-@dataclass
 class Persona:
     name: str
+    surname: str
+    generation_time: str
     gender: str
     sex: str
     orientation: str
@@ -76,12 +74,10 @@ class PersonaGenerator:
             'Playful/Engaging', 'Strict/Traditional', 'Overprotective/Cautious', 
             'Encouraging/Motivational', 'Tough Love/No-Nonsense', 'Chaotic/Unpredictable'
         ]
-        self.QUIRKS = (
-            Trait("Loves knitting", "Enjoys quiet time knitting blankets."),
-            Trait("Always wears mismatched socks", "Has a quirky habit of never wearing matching socks."),
-            Trait("Talks to plants", "Often caught having quiet conversations with houseplants."),
-            Trait("Obsessed with cleanliness", "Always keeps everything spotless.")
-        )
+        self.QUIRKS = [
+            "Loves knitting", "Always wears mismatched socks", 
+            "Talks to plants", "Obsessed with cleanliness"
+        ]
         self.COACHABLE_TOPICS = [
             "What long-held dream have you been postponing?", 
             "Are you struggling to break through a personal limitation?",
@@ -90,16 +86,7 @@ class PersonaGenerator:
         ]
 
     def generate_persona(self) -> Persona:
-        # 1. Blueprint-based Identity framework
-        # =====================================================================
         # IDENTITY BLUEPRINT CONFIGURATION
-        # Each blueprint tuple MUST follow this strict 4-item array sequence:
-        # Index 0: Gender Identity Label -> String used in the final markdown output.
-        # Index 1: Biological Sex -> String ("male" or "female") used for physical context.
-        # Index 2: Name Bank Group -> String ("man", "woman", or "non-binary") sent to names.py.
-        # Index 3: Orientation Pool -> List of strings representing valid sexual preferences.
-        # =====================================================================
-
         blueprints = [
             ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
             ("cisgender man", "male", "man", ["heterosexual", "homosexual", "bisexual", "pansexual"]),
@@ -111,7 +98,6 @@ class PersonaGenerator:
         ]
         gender, sex, name_lookup_gender, orientation_pool = random.choice(blueprints)
         
-        # 2. Fire dynamic external database selection modules
         occupation, financial_situation, education = get_random_career_profile()
         region, region_data, cultural_bg = get_random_cultural_profile()
         social_life, fashion_sense, technology_use = get_random_lifestyle_profile()
@@ -127,11 +113,16 @@ class PersonaGenerator:
             'emotional_traits': random.choice(self.PERSONALITY_TRAITS['emotional_traits']),
             'social_behavior': random.choice(self.PERSONALITY_TRAITS['social_behavior']),
             'sense_of_humor': random.choice(self.PERSONALITY_TRAITS['sense_of_humor']),
-            'quirk': random.choice(self.QUIRKS).name
+            'quirk': random.choice(self.QUIRKS)
         }
+
+        surname = get_random_surname()
+        current_timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
         return Persona(
             name=get_random_name_by_gender(name_lookup_gender), 
+            surname=surname,
+            generation_time=current_timestamp,
             gender=gender, 
             sex=sex, 
             orientation=random.choice(orientation_pool),
@@ -174,9 +165,7 @@ if __name__ == "__main__":
     target_dir = os.path.join(script_dir, "md")
     os.makedirs(target_dir, exist_ok=True)
     
-    timestamp = int(time.time())
-    filename = os.path.join(target_dir, f"{random_persona.name}_{timestamp}_persona.md")
+    filename = os.path.join(target_dir, f"{random_persona.name}_{random_persona.surname}_persona.md")
     
     save_persona_to_markdown(random_persona, filename)
     print(f"\nSuccess! Generated Local Bio: .{os.sep}{os.path.relpath(filename, script_dir)}")
-
