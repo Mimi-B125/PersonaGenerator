@@ -20,6 +20,7 @@ from culture_and_geography import get_random_cultural_profile
 from social_and_lifestyle import get_random_lifestyle_profile
 from coachable_topics import get_tailored_coachable_topics
 from skills_and_talents import get_weighted_skills
+from health_profiles import get_contextual_health_profile
 
 @dataclass
 class Persona:
@@ -133,6 +134,13 @@ class PersonaGenerator:
         current_timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
         tailored_topics = get_tailored_coachable_topics(personality, count=2)
 
+        health_data = get_contextual_health_profile(
+            age=assigned_age,
+            career=occupation,
+            personality=personality,
+            social_life=social_life
+        )
+        
         return Persona(
             name=get_random_name_by_gender(name_lookup_gender), 
             surname=surname,
@@ -152,10 +160,7 @@ class PersonaGenerator:
             career=occupation,
             social_life=social_life,
             financial_situation=financial_situation,
-            health={
-                'Physical Health': random.choice(['Good', 'Fair', 'Poor']), 
-                'Mental Health': random.choice(['Good', 'Fair', 'Poor'])
-            }, 
+            health=health_data, 
             political_views=random.choice(['Liberal', 'Conservative', 'Moderate', 'Independent']), 
             life_goals=random.choice(['Travel the world', 'Achieve financial independence', 'Start a business', 'Find true love', 'Find stability']),
             skills_and_talents=get_weighted_skills(count=2, career=occupation, personality=personality), 
