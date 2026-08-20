@@ -142,7 +142,8 @@ class PersonaGenerator:
             age=assigned_age,
             career=occupation,
             personality=personality,
-            social_life=social_life
+            social_life=social_life,
+            physical_traits=physical 
         )
         chosen_morals = get_contextual_moral_compass(personality)
         caregiver_profile = get_contextual_caregiver_style(personality, chosen_morals)

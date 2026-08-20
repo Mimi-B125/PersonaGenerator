@@ -20,7 +20,7 @@ MENTAL_CONDITIONS = {
     "suppressed": "Suppresses personal frustrations or needs to keep peace, leading to sudden bursts of emotional fatigue."
 }
 
-def get_contextual_health_profile(age: int, career: str, personality: Dict[str, Any], social_life: Dict[str, str]) -> Dict[str, str]:
+def get_contextual_health_profile(age: int, career: str, personality: Dict[str, Any], social_life: Dict[str, str], physical_traits: Dict[str, str]) -> Dict[str, str]:
     """
     Dynamically generates a deeply descriptive health and wellness blueprint 
     by analyzing age, occupational pressure, and psychological traits.
@@ -47,7 +47,7 @@ def get_contextual_health_profile(age: int, career: str, personality: Dict[str, 
         physical = "Carries persistent joint stiffness and sluggish recovery times, exacerbated by ongoing lifestyle stress."
     elif "Conscientious" in temperament and "high_stress" in mental:
         physical = "Suffer from stress-induced tension headaches and tight jaw alignment; rarely stretches or takes breaks."
-    elif "7 - The Enthusiast" in enneagram or "Athletic" in physical:
+    elif "7 - The Enthusiast" in enneagram or "Athletic" in physical_traits.get("body_shape_and_build", ""):
         physical = "Excellent metabolic health, with high physical stamina and clean sleep cycles."
     else:
         physical = random.choice(SOMATIC_CONDITIONS)
