@@ -69,4 +69,9 @@ def generate_persona_markdown(persona) -> str:
         markdown += f"- {topic}\n"
 
     markdown += f"\n## Fashion Sense & Tech Use\n- **Fashion Sense:** {persona.fashion_sense}\n- **Technology Use:** {persona.technology_use}\n"
+
+    markdown += "\n## Enneagram Psychodynamics\n"
+    for key, value in persona.enneagram_psychodynamics.items():
+        markdown += f"- **{key.replace('_', ' ').capitalize()}:** {value}\n"
+
     return markdown

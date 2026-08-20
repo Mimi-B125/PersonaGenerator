@@ -24,8 +24,7 @@ from health_profiles import get_contextual_health_profile
 from caregiver_profiles import get_contextual_caregiver_style
 from moral_compass import get_contextual_moral_compass
 from quirks import get_contextual_quirk
-
-
+from enneagram_psychodynamics import generate_enneagram_psychodynamics
 
 
 @dataclass
@@ -58,23 +57,13 @@ class Persona:
     fashion_sense: str
     technology_use: str
     coachable_topics: List[str]
+    enneagram_psychodynamics: Dict[str, str]
 
 class PersonaGenerator:
     def __init__(self):
         random.seed(None)
         self.PERSONALITY_TRAITS = {
             'favorite_colors': ["Blue", "Green", "Red", "Purple", "Yellow", "Black", "Pink"],
-            'enneagram_types': [
-                {'type': '1 - The Reformer', 'description': 'Principled and perfectionistic', 'core_desire': 'To be good, ethical, and right'},
-                {'type': '2 - The Helper', 'description': 'Caring and people-pleasing', 'core_desire': 'To be loved and needed'},
-                {'type': '3 - The Achiever', 'description': 'Success-oriented and driven', 'core_desire': 'To be successful and admired'},
-                {'type': '4 - The Individualist', 'description': 'Expressive and sensitive', 'core_desire': 'To find themselves and their unique identity'},
-                {'type': '5 - The Investigator', 'description': 'Perceptive and secretive', 'core_desire': 'To be competent and knowledgeable'},
-                {'type': '6 - The Loyalist', 'description': 'Security-oriented and anxious', 'core_desire': 'To feel secure and supported'},
-                {'type': '7 - The Enthusiast', 'description': 'Spontaneous and versatile', 'core_desire': 'To be happy, satisfied, and content'},
-                {'type': '8 - The Challenger', 'description': 'Confident and confrontational', 'core_desire': 'To protect themselves and remain in control'},
-                {'type': '9 - The Peacemaker', 'description': 'Reassuring and complacent', 'core_desire': 'To have inner stability and peace'}
-            ],
             'temperament': ["Introverted", "Extroverted", "Agreeable", "Conscientious", "Neurotic"],
             'emotional_traits': ["Anxious", "Calm", "Empathetic", "Irritable", "Optimistic"],
             'social_behavior': ["Outgoing", "Reserved", "Shy", "Confident"],
@@ -82,7 +71,7 @@ class PersonaGenerator:
         }
 
     def generate_persona(self) -> Persona:
-        # 1. IDENTITY BLUEPRINT CONFIGURATION
+        # IDENTITY BLUEPRINT CONFIGURATION
         blueprints = [
             ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
             ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
@@ -95,37 +84,50 @@ class PersonaGenerator:
         orientation = random.choice(orientation_pool)
         assigned_age = random.randint(22, 68)
 
-        # 2. ENVIRONMENT & LIFESTYLE GENERATION
+        # ENVIRONMENT & LIFESTYLE GENERATION
         occupation, financial_situation, education = get_random_career_profile()
         region, region_data, cultural_bg = get_random_cultural_profile()
         social_life, fashion_sense, technology_use = get_random_lifestyle_profile()
 
-        # 3. PHYSICAL GENERATION
-        physical = get_random_physical_traits(gender_identity=gender, sex=sex, age=assigned_age, fashion_sense=fashion_sense)
+        # PHYSICAL GENERATION
+        physical = get_random_physical_traits(
+            gender_identity=gender, 
+            sex=sex, 
+            age=assigned_age, 
+            fashion_sense=fashion_sense
+        )
 
-        # 4. PERSONALITY BASE & ENNEAGRAM SELECTION
-        enneagram = random.choice(self.PERSONALITY_TRAITS['enneagram_types'])
+        #Initialize Enneagram type and build basic personality dict
+        enneagram_key = str(random.randint(1, 9))
+        temperament_choice = random.choice(self.PERSONALITY_TRAITS['temperament'])
+
         personality = {
-            'siblings': random.randint(0, 4),
+            'enneagram_type': enneagram_key,
+            'siblings': str(random.randint(0, 4)),
             'favorite_color': random.choice(self.PERSONALITY_TRAITS['favorite_colors']),
             'occupation': occupation,
-            'enneagram_type': enneagram['type'],
-            'enneagram_description': enneagram['description'],
-            'temperament': random.choice(self.PERSONALITY_TRAITS['temperament']),
+            'temperament': temperament_choice,
             'emotional_traits': random.choice(self.PERSONALITY_TRAITS['emotional_traits']),
             'social_behavior': random.choice(self.PERSONALITY_TRAITS['social_behavior']),
             'sense_of_humor': random.choice(self.PERSONALITY_TRAITS['sense_of_humor']),
             'quirk': ""
         }
 
-        # 5. CROSS-REFERENCE BODILY PERCEPTION (Now safe because personality & physical exist)
+        #Pass initialized variables directly into enneagram_psychodynamics
+        psychodynamics = generate_enneagram_psychodynamics(
+            enneagram_type=personality['enneagram_type'],
+            temperament=personality['temperament'],
+            age=assigned_age,
+            biological_sex=sex
+)        
+        # CROSS-REFERENCE BODILY PERCEPTION & QUIRKS
         personality['quirk'] = get_contextual_quirk(personality, fashion_sense)
         personality['body_image_perception'] = get_body_perception_narrative(personality, physical)
 
-        # 6. SEX PREFERENCES & TOPICS
+        # SEX PREFERENCES & TOPICS
         sexual_preferences = get_weighted_sexual_preferences(
             orientation=orientation, 
-            personality={'enneagram_type': enneagram['type']}
+            personality=personality
         )
         
         surname = get_random_surname()
@@ -170,7 +172,8 @@ class PersonaGenerator:
             leisure_activities=random.sample(['Binge-watching TV', 'Reading', 'Gardening', 'Hiking'], k=2), 
             fashion_sense=fashion_sense, 
             technology_use=technology_use,
-            coachable_topics=tailored_topics
+            coachable_topics=tailored_topics,
+            enneagram_psychodynamics=psychodynamics
         )
 
 def save_persona_to_markdown(persona, filename):
