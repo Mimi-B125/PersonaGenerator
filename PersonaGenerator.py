@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 # Modular Imports
 from physical_traits import get_random_physical_traits
-from sexual_preferences import get_random_sexual_preferences
+from sexual_preferences import get_weighted_sexual_preferences
 from names import get_random_name_by_gender
 from hobbies import get_random_hobbies
 from fears_and_insecurities import get_random_fears
@@ -17,12 +17,15 @@ from surnames import get_random_surname
 from careers_and_finance import get_random_career_profile
 from culture_and_geography import get_random_cultural_profile
 from social_and_lifestyle import get_random_lifestyle_profile
+from coachable_topics import get_tailored_coachable_topics
+from skills_and_talents import get_weighted_skills
 
 @dataclass
 class Persona:
     name: str
     surname: str
     generation_time: str
+    age: int
     gender: str
     sex: str
     orientation: str
@@ -89,20 +92,24 @@ class PersonaGenerator:
         # IDENTITY BLUEPRINT CONFIGURATION
         blueprints = [
             ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
+            ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
+            ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
+            ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
             ("cisgender man", "male", "man", ["heterosexual", "homosexual", "bisexual", "pansexual"]),
             ("transfeminine woman", "male", "woman", ["lesbian", "bisexual", "pansexual", "heterosexual"]),
-            ("transmasculine man", "female", "man", ["homosexual", "bisexual", "pansexual", "heterosexual"]),
-            ("non-binary (feminine-aligned)", "female", "non-binary", ["lesbian", "bisexual", "pansexual", "queer"]),
-            ("non-binary (masculine-aligned)", "male", "non-binary", ["homosexual", "bisexual", "pansexual", "queer"]),
-            ("agender", random.choice(["male", "female"]), "non-binary", ["asexual", "pansexual", "bisexual", "queer"])
         ]
         gender, sex, name_lookup_gender, orientation_pool = random.choice(blueprints)
-        
+        orientation = random.choice(orientation_pool)
+        assigned_age = random.randint(22, 68)
         occupation, financial_situation, education = get_random_career_profile()
         region, region_data, cultural_bg = get_random_cultural_profile()
         social_life, fashion_sense, technology_use = get_random_lifestyle_profile()
-        
+        physical = get_random_physical_traits(sex=sex, age=assigned_age)
         enneagram = random.choice(self.PERSONALITY_TRAITS['enneagram_types'])
+        sexual_preferences = get_weighted_sexual_preferences(
+            orientation=orientation, 
+            personality={'enneagram_type': enneagram['type']}
+        )
         personality = {
             'siblings': random.randint(0, 4),
             'favorite_color': random.choice(self.PERSONALITY_TRAITS['favorite_colors']),
@@ -118,19 +125,21 @@ class PersonaGenerator:
 
         surname = get_random_surname()
         current_timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        tailored_topics = get_tailored_coachable_topics(personality, count=2)
 
         return Persona(
             name=get_random_name_by_gender(name_lookup_gender), 
             surname=surname,
             generation_time=current_timestamp,
+            age=assigned_age,
             gender=gender, 
             sex=sex, 
-            orientation=random.choice(orientation_pool),
+            orientation=orientation,
             caregiver_style=random.choice(self.CARE_GIVER_STYLE), 
             physical_traits=get_random_physical_traits(), 
             personality=personality, 
             region=region, 
-            kink_preferences=get_random_sexual_preferences(), 
+            kink_preferences=sexual_preferences, 
             hobbies=get_random_hobbies(2),
             cultural_background=cultural_bg,
             education=education, 
@@ -143,13 +152,13 @@ class PersonaGenerator:
             }, 
             political_views=random.choice(['Liberal', 'Conservative', 'Moderate', 'Independent']), 
             life_goals=random.choice(['Travel the world', 'Achieve financial independence', 'Start a business', 'Find true love', 'Find stability']),
-            skills_and_talents=random.sample(['Cooking', 'Painting', 'Writing', 'Dancing', 'Programming'], k=2), 
-            fears_and_insecurities=get_random_fears(2), 
+            skills_and_talents=get_weighted_skills(count=2, career=occupation, personality=personality), 
+            fears_and_insecurities=get_random_fears(2, personality=personality), 
             moral_compass=random.choice(['Utilitarian', 'Deontological', 'Virtue Ethics', 'Pragmatic']), 
             leisure_activities=random.sample(['Binge-watching TV', 'Reading', 'Gardening', 'Hiking'], k=2), 
             fashion_sense=fashion_sense, 
             technology_use=technology_use,
-            coachable_topics=random.sample(self.COACHABLE_TOPICS, k=min(2, len(self.COACHABLE_TOPICS)))
+            coachable_topics=tailored_topics
         )
 
 def save_persona_to_markdown(persona, filename):

@@ -16,6 +16,7 @@ def generate_persona_markdown(persona) -> str:
     markdown += f"\n- **Caregiver Style:** {persona.caregiver_style}\n"
     
     markdown += "\n## Gender and Biological Sex\n"
+    markdown += f"- **Age:** {persona.age}\n"
     markdown += f"- **Gender Identity:** {persona.gender}\n"
     markdown += f"- **Biological Sex:** {persona.sex}\n"
     markdown += f"- **Sexual Orientation:** {persona.orientation}\n"
@@ -23,8 +24,9 @@ def generate_persona_markdown(persona) -> str:
     markdown += f"\n## Region of Origin\n- **Region:** {persona.region}\n"
     
     markdown += "\n## Kink Preferences\n"
-    for kink, description in persona.kink_preferences.items():
-        markdown += f"- **{kink.capitalize()}:** {description}\n"
+    for item in persona.kink_preferences:
+        markdown += f"- **{item['preference']}:** {item['description']} (Intensity: {item['intensity']}/10, Frequency: {item['frequency']})\n"
+
     
     markdown += "\n## Hobbies\n"
     for hobby in persona.hobbies:

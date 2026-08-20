@@ -1,60 +1,32 @@
-import random
+from faker import Faker
 from typing import List, Dict
 
-# Complete gender-correlated dictionary mapping 
-NAMES_BY_GENDER: Dict[str, List[str]] = {
-    "man": [
-        "Liam", "Noah", "Oliver", "Elijah", "James",
-        "William", "Benjamin", "Lucas", "Henry", "Alexander",
-        "Mason", "Ethan", "Michael", "Daniel", "Jacob",
-        "Logan", "Jackson", "Sebastian", "Jack", "Aiden",
-        "Owen", "Samuel", "Matthew", "Joseph", "Levi",
-        "David", "John", "Wyatt", "Carter", "Julian",
-        "Thomas", "Nathan", "Caleb", "Christopher", "Joshua",
-        "Andrew", "Ryan", "Isaac", "Adam", "Nathaniel"
-    ],
-    "woman": [
-        "Olivia", "Charlotte", "Amelia", "Sophia", "Mia",
-        "Penelope", "Abigail", "Ella", "Hazel", "Nora",
-        "Layla", "Lily", "Aurora", "Zoe", "Stella",
-        "Ivy", "Victoria", "Emilia", "Naomi", "Hannah",
-        "Scarlett", "Grace", "Chloe", "Isabella", "Evelyn",
-        "Aria", "Ellie", "Madison", "Avery", "Sofia",
-        "Camila", "Harper", "Luna", "Paisley", "Savannah",
-        "Willow", "Brooklyn", "Claire", "Elena", "Autumn",
-        "Violet", "Lucy", "Ruby", "Eva", "Alice",
-        "Aubrey", "Bella", "Sadie", "Mila", "Delilah",
-        "Caroline", "Anna", "Natalie", "Gabriella", "Leah",
-        "Isla", "Eliza", "Jade", "Maya", "Juliet",
-        "Faith", "Rose", "Lydia", "Mariah", "Josephine", 
-        "Margaret", "Clara", "Phoebe", "Eleanor", "Genevieve",
-        "Catherine", "Audrey", "Vivian", "Madeline", "Sienna",
-        "Everly", "Quinn", "Adelaide"
-    ],
-    "non-binary": [
-        "Taylor", "Jordan", "Alex", "Casey", "Morgan",
-        "Riley", "Skyler", "Quinn", "Avery", "Rowan"
-    ]
-}
+# Initialize Faker once at the module level for performance
+_fake = Faker()
 
 def get_random_name_by_gender(gender: str) -> str:
     """
-    Returns a random name based on the specified gender key string.
+    Returns a random name based on the specified gender key string 
+    using the Faker library.
     """
-    # Normalize mapping connections
+    # Normalize mapping connections to match your blueprint keys
     clean_gender = gender.lower().strip()
-    if clean_gender == "female":
-        clean_gender = "woman"
-    elif clean_gender == "male":
-        clean_gender = "man"
-
-    if clean_gender not in NAMES_BY_GENDER:
-        raise ValueError(f"Invalid gender '{gender}'. Must be 'man', 'woman', or 'non-binary'.")
     
-    return random.choice(NAMES_BY_GENDER[clean_gender])
+    if clean_gender in ["female", "woman"]:
+        return _fake.first_name_female()
+    elif clean_gender in ["male", "man"]:
+        return _fake.first_name_male()
+    elif clean_gender == "non-binary":
+        # Faker doesn't have a specific non-binary method, 
+        # so we use the standard first_name() which is gender-neutral/mixed.
+        return _fake.first_name()
+    else:
+        # Fallback for safety if an unexpected string is passed
+        return _fake.first_name()
 
 def get_all_names() -> Dict[str, List[str]]:
     """
-    Returns the complete structured names dictionary catalog.
+    Note: Since Faker generates names dynamically, this function 
+    is now deprecated as there is no longer a static list.
     """
-    return NAMES_BY_GENDER
+    return {"info": "Faker generates names dynamically; no static list available."}
