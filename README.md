@@ -64,31 +64,10 @@ graph TD
 | **8\. Health & Morality Engine** | health\_profiles.py moral\_compass.py caregiver\_profiles.py | age, career, personality, physical | health, moral\_compass, caregiver\_style | Dict\[str, str\] & Strings |
 | **9\. Document Renderer** | markdown\_generator.py | Complete Persona Dataclass Instance | Formatted Markdown File saved to ./md/ | File I/O (.md) |
 
-## **Repository Directory Structure**
+## Project Architecture
 
-Plaintext  
-PersonaGenerator/  
-├── md/                            \# Generated persona output directory  
-├── PersonaGenerator.py            \# Main orchestrator script & entry point  
-├── enneagram\_psychodynamics.py    \# Psychodynamic, somatic armoring & subtype engine  
-├── caregiver\_profiles.py          \# Contextual caregiving and relational style asset  
-├── careers\_and\_finance.py         \# Career, income tier, and education background asset  
-├── coachable\_topics.py            \# Personal growth and development areas module  
-├── culture\_and\_geography.py       \# Regional and cultural background asset  
-├── fears\_and\_insecurities.py      \# Fears and bodily perception narrative engine  
-├── health\_profiles.py             \# Contextual physical and mental health profiles  
-├── hobbies.py                     \# Weighted hobbies and leisure activities  
-├── markdown\_generator.py          \# Persona dataclass to Markdown exporter  
-├── moral\_compass.py               \# Ethical frameworks and moral drivers asset  
-├── names.py                       \# Gender-aligned given name generator  
-├── physical\_traits.py             \# Anatomical and physical marker generator  
-├── quirks.py                      \# Behavioral quirks and contextual habits module  
-├── sexual\_preferences.py          \# Weighted kink and orientation preference matrix  
-├── skills\_and\_talents.py          \# Weighted skill sets based on career/personality  
-├── social\_and\_lifestyle.py        \# Social style, fashion, and tech usage asset  
-├── surnames.py                    \# Surname database generator  
-├── SENSITIVE\_CONTENT.md           \# Content scope and usage advisory  
-└── README.md                      \# Architecture documentation
+<!-- TREE_START -->
+<!-- TREE_END -->
 
 ## **Quick Start**
 

@@ -1,5 +1,9 @@
 ## [Auto-Updated] - 2026-08-20
 
+* refactor(quirks): rebuild quirks module with cascading weighted selection and Dict[str, str] interface (dbdc171)
+
+## [Auto-Updated] - 2026-08-20
+
 * fix(repo): unignore core docs and sync sexual_preferences updates (4e86196)
 
 ## [Auto-Updated] - 2026-08-20
