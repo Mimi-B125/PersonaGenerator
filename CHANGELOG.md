@@ -1,5 +1,9 @@
 ## [Auto-Updated] - 2026-08-20
 
+* fix(readme): resolve self-exclusion bug and line ending mismatch in README_updater.py (081b825)
+
+## [Auto-Updated] - 2026-08-20
+
 * feat(quirks): rebuild quirks engine with cross-referenced scoring and fix shell pre-commit hook (c26eba1)
 
 ## [Auto-Updated] - 2026-08-20

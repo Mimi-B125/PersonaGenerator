@@ -119,8 +119,7 @@ class PersonaGenerator:
             biological_sex=sex
         )
         
-        # CROSS-REFERENCE BODILY PERCEPTION & QUIRKS
-        personality['quirk'] = get_contextual_quirk(personality, fashion_sense)
+        # CROSS-REFERENCE BODILY PERCEPTION
         personality['body_image_perception'] = get_body_perception_narrative(personality, physical)
 
         # SEX PREFERENCES & KINK PROFILE GENERATION
@@ -143,6 +142,7 @@ class PersonaGenerator:
             social_life=social_life,
             physical_traits=physical 
         )
+
         # QUIRKS GENERATION (Cross-referenced with Upstream Anchors)
         quirk_data = get_contextual_quirk(
             personality=personality,
@@ -150,6 +150,8 @@ class PersonaGenerator:
             age=assigned_age,
             biological_sex=sex
         )
+        personality['quirk'] = quirk_data.get("Private Quirks & Compulsions", "")
+        
         chosen_morals = get_contextual_moral_compass(personality)
         caregiver_profile = get_contextual_caregiver_style(personality, chosen_morals)
 
