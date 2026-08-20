@@ -97,10 +97,10 @@ class PersonaGenerator:
             fashion_sense=fashion_sense
         )
 
-        #Initialize Enneagram type and build basic personality dict
+        # PERSONALITY BASE INITIALIZATION (Sequential Upstream Anchor)
         enneagram_key = str(random.randint(1, 9))
-        temperament_choice = random.choice(self.PERSONALITY_TRAITS['temperament'])
-
+        temperament_choice = random.choice(self.PERSONALITY_TRAITS['temperament'])     
+        
         personality = {
             'enneagram_type': enneagram_key,
             'siblings': str(random.randint(0, 4)),
@@ -113,13 +113,14 @@ class PersonaGenerator:
             'quirk': ""
         }
 
-        #Pass initialized variables directly into enneagram_psychodynamics
+        # PSYCHODYNAMIC LAYER GENERATION
         psychodynamics = generate_enneagram_psychodynamics(
             enneagram_type=personality['enneagram_type'],
             temperament=personality['temperament'],
             age=assigned_age,
             biological_sex=sex
-)        
+        )
+        
         # CROSS-REFERENCE BODILY PERCEPTION & QUIRKS
         personality['quirk'] = get_contextual_quirk(personality, fashion_sense)
         personality['body_image_perception'] = get_body_perception_narrative(personality, physical)
