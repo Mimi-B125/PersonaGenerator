@@ -104,7 +104,7 @@ class PersonaGenerator:
         occupation, financial_situation, education = get_random_career_profile()
         region, region_data, cultural_bg = get_random_cultural_profile()
         social_life, fashion_sense, technology_use = get_random_lifestyle_profile()
-        physical = get_random_physical_traits(sex=sex, age=assigned_age)
+        physical = get_random_physical_traits(sex=sex, age=assigned_age, fashion_sense=fashion_sense)
         enneagram = random.choice(self.PERSONALITY_TRAITS['enneagram_types'])
         sexual_preferences = get_weighted_sexual_preferences(
             orientation=orientation, 
@@ -136,7 +136,7 @@ class PersonaGenerator:
             sex=sex, 
             orientation=orientation,
             caregiver_style=random.choice(self.CARE_GIVER_STYLE), 
-            physical_traits=get_random_physical_traits(), 
+            physical_traits=physical, 
             personality=personality, 
             region=region, 
             kink_preferences=sexual_preferences, 

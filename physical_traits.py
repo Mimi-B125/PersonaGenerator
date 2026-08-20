@@ -1,61 +1,59 @@
 # physical_traits.py
 import random
-from typing import Dict, List, Any
+from typing import Dict, Any
 
-# Demographic distributions driven by biological sex and age boundaries
-HAIR_BY_AGE = {
-    "young_adult": ["Blonde", "Deep Brown", "Jet Black", "Auburn Red", "Dyed Platinum", "Faded Copper"],
-    "middle_aged": ["Blonde", "Deep Brown", "Jet Black", "Auburn Red", "Salt and Pepper", "Early Gray"],
-    "senior": ["Silver Gray", "Snow White", "Thinning Slate", "Dyed Dark Brown"]
+# 1. Distinct aesthetic styles mapped to the lifestyle fashion sense
+STYLE_AESTHETICS = {
+    "Minimalist": ["clean lines, monochromatic tones, structural tailoring, understated elegance"],
+    "Edgy": ["distressed textures, leather accents, raw dark denim, sharp asymmetric cuts, industrial hardware"],
+    "Vintage": ["classic retro tailoring, silk textures, structured lace, nostalgic silhouettes, timeless glamour"],
+    "Trendy": ["bold contemporary silhouettes, high-contrast streetwear, form-fitting statement pieces"],
+    "Bohemian": ["flowing fabrics, earthy organic textures, layered jewelry, relaxed soft drapes"],
+    "Glamorous": ["luxurious form-enhancing fabrics, striking high-end silhouettes, dramatic clean cuts, polished presentation"],
+    "Casual": ["effortless relaxed basics, soft unstructured fabrics, clean athletic accents"],
+    "Preppy": ["sharp clean-cut tailoring, classic premium knits, structured collegiate lines"]
 }
 
-HEIGHT_BY_SEX = {
-    "female": ["Petite (under 5'3\")", "Average (5'4\" to 5'7\")", "Tall (over 5'8\")"],
-    "male": ["Short (under 5'6\")", "Average (5'7\" to 5'11\")", "Tall (over 6'0\")"]
-}
-
-BODY_BY_SEX = {
-    "female": {"Slim": 0.2, "Athletic": 0.2, "Curvy / Voluptuous": 0.3, "Average": 0.3},
-    "male": {"Slim": 0.2, "Athletic / Toned": 0.3, "Stocky / Broad-Shouldered": 0.3, "Average": 0.2}
-}
-
-EYE_COLORS = ["Piercing Blue", "Emerald Green", "Warm Brown", "Deep Hazel", "Stormy Gray"]
-
-DISTINCTIVE_FEATURES = [
-    "Faint scar across the left eyebrow", "Intricate sleeve tattoo on the forearm", 
-    "Splayed freckles across the bridge of the nose", "Prominent birthmark on the side of the neck", 
-    "Discreet nose piercing", "Fine laugh lines around the eyes", "Calloused hands from manual work",
-    "Consistently wears classic wire-rimmed glasses"
+# 2. Somatic and visual presentation vectors driven by biological sex and fitness archetypes
+COMPLEXION_AND_TEXTURE = [
+    "porcelain smooth with a cool undertone", "sun-kissed olive with a warm radiance",
+    "rich deep obsidian with a flawless satin sheen", "creamy alabaster, sensitive and clear",
+    "warm golden bronze with subtle luminous highlights"
 ]
 
-def get_random_physical_traits(sex: str = "female", age: int = 35) -> Dict[str, str]:
+SENSORY_DETAILS = [
+    "faint scent of vanilla bourbon and rich cedar wood",
+    "subtle trace of crisp sea salt and clean white musk",
+    "warm aroma of crushed dark cocoa and sweet amber resin",
+    "delicate notes of midnight jasmine and soft sandalwood"
+]
+
+HAIR_STYLES = {
+    "female": ["cropped sharp pixie", "sleek shoulder-length bob", "cascading waves reaching the mid-back", "tightly coiled natural curls pinned up", "messy high volume top-knot"],
+    "male": ["sharp textured undercut", "clean classic taper fade", "shoulder-length relaxed waves", "closely cropped buzz cut", "thick neatly groomed pompadour"]
+}
+
+# 3. Dynamic layout generator
+def get_random_physical_traits(sex: str = "female", age: int = 35, fashion_sense: str = "Casual") -> Dict[str, str]:
     """
-    Generates a realistic, highly descriptive, and demographically consistent 
-    dictionary of physical traits based on biological sex and age metrics.
+    Generates high-fidelity visual and physical prompt tokens optimized 
+    for character persistence in local generation workflows.
     """
-    # 1. Normalize structural input parameters
     sex_clean = sex.lower() if sex.lower() in ["female", "male"] else "female"
     
-    if age < 30:
-        age_group = "young_adult"
-    elif age < 55:
-        age_group = "middle_aged"
-    else:
-        age_group = "senior"
-
-    # 2. Extract tailored trait configurations
-    hair_pool = HAIR_BY_AGE[age_group]
-    height_pool = HEIGHT_BY_SEX[sex_clean]
+    # Resolve style aesthetics safely with a fallback
+    aesthetic_tokens = random.choice(STYLE_AESTHETICS.get(fashion_sense, STYLE_AESTHETICS["Casual"]))
     
-    body_matrix = BODY_BY_SEX[sex_clean]
-    body_choices = list(body_matrix.keys())
-    body_weights = list(body_matrix.values())
-
-    # 3. Compile the structural physical payload
+    # Select gender-appropriate hair styling
+    hair_style_choice = random.choice(HAIR_STYLES[sex_clean])
+    
+    # Height parameters using absolute descriptive scales
+    height_range = "petite and compact" if sex_clean == "female" else "slender and lean"
+    
     return {
-        "hair_color": random.choice(hair_pool),
-        "eye_color": random.choice(EYE_COLORS),
-        "height": random.choice(height_pool),
-        "body_type": random.choices(body_choices, weights=body_weights, k=1)[0],
-        "distinctive_features": random.choice(DISTINCTIVE_FEATURES)
+        "visual_presence": f"{height_range}, with {random.choice(COMPLEXION_AND_TEXTURE)}",
+        "hair_presentation": f"{hair_style_choice}, shaded in a rich deep tone",
+        "aesthetic_vibe": aesthetic_tokens,
+        "sensory_signature": random.choice(SENSORY_DETAILS),
+        "notable_markings": "a distinct, striking gaze that commands immediate attention"
     }
