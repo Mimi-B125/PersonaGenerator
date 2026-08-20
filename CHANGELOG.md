@@ -1,5 +1,9 @@
 ## [Auto-Updated] - 2026-08-20
 
+* fix(repo): unignore CHANGELOG.md and core documentation files (96377fa)
+
+## [Auto-Updated] - 2026-08-20
+
 * chore(config): ignore local md/ output directory and generated profiles (791b912)
 
 ## [Auto-Updated] - 2026-08-20

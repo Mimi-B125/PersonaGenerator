@@ -12,39 +12,25 @@ DEVELOPER GUIDE: EXTENDING KINKS & SUBTYPES
 1. ADDING SUBTYPES TO AN EXISTING CATEGORY:
    - Locate the target category key in `KINK_DICT`.
    - Append your new subtype string directly to the category's list.
-   Example:
-       "BDSM": [
-           "Bondage", "Discipline", ..., "Your New Subtype Here"
-       ]
 
 2. ADDING A BRAND NEW KINK CATEGORY:
    - Add a new key-value pair to `KINK_DICT` with a descriptive category title 
      and a list of string subtypes.
-   Example:
-       "Wax Play": [
-           "Low-Temperature Soy Wax",
-           "Dripping Sensation Play",
-           "Temperature Contrast Scenes"
-       ]
 
-3. (OPTIONAL) TUNING ENNEAGRAM & TEMPERAMENT WEIGHTS:
-   - If you added a new category and want specific personality types to favor it:
-     a. Go to `ENNEAGRAM_WEIGHTS` and add the category key under the desired 
-        type string ("1" through "9") with a float multiplier (e.g., 1.4).
-     b. Go to `TEMPERAMENT_WEIGHTS` and add the category key under the desired 
-        temperament string ("neurotic", "extroverted", etc.) with a multiplier.
-   - NOTE: If you skip step 3, the engine automatically assigns a baseline 
-     multiplier of 1.0 to your new category and applies organic random variance, 
-     so it will still be selected seamlessly without throwing errors.
+3. TUNING ENNEAGRAM & TEMPERAMENT WEIGHTS:
+   - Map your category across `ENNEAGRAM_WEIGHTS` for Types "1" through "9".
+   - Assign multipliers > 1.0 for alignment, < 1.0 for psychodynamic resistance.
+   - NOTE: If omitted for a specific type, the engine defaults to a baseline 
+     multiplier of 1.0 automatically.
 
 4. RETURN SCHEMA CONTRACT:
    - Function MUST return `Dict[str, str]`.
-   - Keys act as Markdown headers/labels; values act as prompt grounding tokens.
 ===============================================================================
 """
 
 import random
 from typing import Dict, List, Any
+
 
 KINK_DICT: Dict[str, List[str]] = {
     "BDSM": [
@@ -186,23 +172,34 @@ KINK_DICT: Dict[str, List[str]] = {
         "Growling/Snarling with Intimidating Intent", "Natural Settings (Forests)", 
         "Non-Verbal Communication", "Scratching/Biting Predatory Behavior", 
         "Fear-Induced Adrenaline Turn-On"
+    ],
+    "ABDL": [
+        "Diaper Wearing", "Adult Nursery Play", "Diaper Changing Rituals",
+        "Regression & Caretaking Dynamics", "Pacifiers & Comfort Objects",
+        "Messing/Wetting Play", "Sensation Play with Powder/Lotion"
+    ],
+    "Ageplay": [
+        "Little Space (Littles)", "Daddy/Mommy Caregiver Dynamics (DDlg/MDlb)",
+        "Middle Space (Tweens/Teens)", "Disciplinary Ageplay",
+        "Bedtime Rituals & Rules", "Age Regression for Stress Relief",
+        "Roleplay with Age-Inappropriate Props"
     ]
 }
 
-# -----------------------------------------------------------------------------
-# CASCADING WEIGHT MATRIX ACCORDING TO UPSTREAM ANCHORS
-# -----------------------------------------------------------------------------
 ENNEAGRAM_WEIGHTS: Dict[str, Dict[str, float]] = {
     "1": {
         "Corner Time": 1.7, 
         "Erotic Humiliation": 1.5, 
         "Power Exchange": 1.4, 
         "Corsetry/Tight-Lacing": 1.4, 
+        "Ageplay": 1.3,
         "BDSM": 1.3
     },
     "2": {
         "Chastity Play": 1.6, 
         "Lactation Fetish": 1.5, 
+        "ABDL": 1.5,
+        "Ageplay": 1.4,
         "Hucow Roleplay": 1.4, 
         "Roleplay": 1.3, 
         "Breeding Kink": 1.3
@@ -212,35 +209,45 @@ ENNEAGRAM_WEIGHTS: Dict[str, Dict[str, float]] = {
         "Corsetry/Tight-Lacing": 1.5, 
         "Foot Fetish": 1.4, 
         "Nylon Kink": 1.4, 
-        "Erotic Humiliation": 1.3
+        "Erotic Humiliation": 1.3,
+        "Ageplay": 1.1,
+        "ABDL": 0.8
     },
     "4": {
         "Rope Bondage": 1.8, 
         "Sensory Deprivation": 1.6, 
         "Objectification": 1.5, 
         "Corsetry/Tight-Lacing": 1.4, 
-        "Knife Play": 1.4
+        "Knife Play": 1.4,
+        "Ageplay": 1.4,
+        "ABDL": 1.3
     },
     "5": {
         "Electrostimulation": 1.7, 
         "Voyeurism": 1.6, 
         "Sensory Deprivation": 1.4, 
         "Rope Bondage": 1.3, 
-        "Foot Fetish": 1.2
+        "Foot Fetish": 1.2,
+        "ABDL": 0.9,
+        "Ageplay": 1.1
     },
     "6": {
         "Power Exchange": 1.6, 
         "Primal Fear Play": 1.5, 
         "Corner Time": 1.4, 
+        "ABDL": 1.3,
         "Breath Play": 1.3, 
-        "BDSM": 1.3
+        "BDSM": 1.3,
+        "Ageplay": 1.2
     },
     "7": {
         "Primal Play": 1.6, 
         "Exhibitionism": 1.5, 
         "Roleplay": 1.4, 
         "Primal Fear Play": 1.4, 
-        "Tickling (Knismolagnia)": 1.3
+        "Tickling (Knismolagnia)": 1.3,
+        "Ageplay": 1.4,
+        "ABDL": 1.2
     },
     "8": {
         "Impact Play": 1.8, 
@@ -248,10 +255,14 @@ ENNEAGRAM_WEIGHTS: Dict[str, Dict[str, float]] = {
         "BDSM": 1.6, 
         "Power Exchange": 1.5, 
         "Fisting": 1.5, 
-        "Knife Play": 1.4
+        "Knife Play": 1.4,
+        "Ageplay": 1.4,
+        "ABDL": 0.8
     },
     "9": {
         "Sensory Deprivation": 1.6, 
+        "ABDL": 1.6,
+        "Ageplay": 1.5,
         "Objectification": 1.5, 
         "Chastity Play": 1.4, 
         "Tickling (Knismolagnia)": 1.3, 
@@ -264,25 +275,29 @@ TEMPERAMENT_WEIGHTS: Dict[str, Dict[str, float]] = {
         "Corner Time": 1.4, 
         "Sensory Deprivation": 1.4, 
         "Erotic Humiliation": 1.3, 
-        "Breath Play": 1.3
+        "Breath Play": 1.3,
+        "ABDL": 1.3
     },
     "extroverted": {
         "Exhibitionism": 1.7, 
         "Primal Play": 1.5, 
         "Roleplay": 1.4, 
-        "Impact Play": 1.3
+        "Impact Play": 1.3,
+        "Ageplay": 1.3
     },
     "introverted": {
         "Voyeurism": 1.6, 
         "Sensory Deprivation": 1.4, 
         "Rope Bondage": 1.4, 
-        "Electrostimulation": 1.3
+        "Electrostimulation": 1.3,
+        "ABDL": 1.2
     },
     "agreeable": {
         "Roleplay": 1.3, 
         "Tickling (Knismolagnia)": 1.4, 
         "Chastity Play": 1.3, 
-        "Breeding Kink": 1.2
+        "Breeding Kink": 1.2,
+        "Ageplay": 1.3
     },
     "conscientious": {
         "Corsetry/Tight-Lacing": 1.5, 
@@ -300,7 +315,7 @@ def get_weighted_sexual_preferences(
     sex: str = "female"
 ) -> Dict[str, str]:
     """
-    Calculates dynamic scores across all 29 categories in KINK_DICT using 
+    Calculates dynamic scores across all categories in KINK_DICT using 
     upstream anchors (Enneagram, Temperament, Age, Sex, Orientation).
     
     Returns a unified Dict[str, str] compatible with Persona dataclass & orchestrator.
@@ -333,7 +348,7 @@ def get_weighted_sexual_preferences(
             if category in ["Power Exchange", "Sensory Deprivation", "Voyeurism", "Corsetry/Tight-Lacing", "Chastity Play"]:
                 score *= 1.35
         elif age < 28:
-            if category in ["Primal Play", "Primal Fear Play", "Exhibitionism", "Erotic Humiliation", "Impact Play"]:
+            if category in ["Primal Play", "Primal Fear Play", "Exhibitionism", "Erotic Humiliation", "Impact Play", "Ageplay"]:
                 score *= 1.35
 
         # Random variance engine (0.8 - 1.2) for organic variance
@@ -357,9 +372,9 @@ def get_weighted_sexual_preferences(
 
     # Determine Dynamic Orientation
     if enneagram_type in ["8", "3", "1"]:
-        rel_dynamic = random.choice(["Dominant (Top)", "Strict Switch (Dom-leaning)", "Master/Mistress Persona"])
+        rel_dynamic = random.choice(["Dominant (Top)", "Strict Switch (Dom-leaning)", "Master/Mistress Persona", "Caregiver/Top"])
     elif enneagram_type in ["2", "6", "9"]:
-        rel_dynamic = random.choice(["Submissive (Bottom)", "Service Oriented Switch", "Pet/Property Persona"])
+        rel_dynamic = random.choice(["Submissive (Bottom)", "Service Oriented Switch", "Pet/Property Persona", "Little/Middle Space Lean"])
     else:
         rel_dynamic = random.choice(["Switch (Versatile)", "Sensory Explorer", "Observer/Voyeur Lean"])
 
