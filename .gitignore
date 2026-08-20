@@ -7,3 +7,7 @@ Prompts/
 
 md/
 *.md
+
+!CHANGELOG.md
+!README.md
+!SENSITIVE_CONTENT.md
