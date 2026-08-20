@@ -21,6 +21,10 @@ from social_and_lifestyle import get_random_lifestyle_profile
 from coachable_topics import get_tailored_coachable_topics
 from skills_and_talents import get_weighted_skills
 from health_profiles import get_contextual_health_profile
+from caregiver_profiles import get_contextual_caregiver_style
+from moral_compass import get_contextual_moral_compass
+
+
 
 @dataclass
 class Persona:
@@ -140,7 +144,9 @@ class PersonaGenerator:
             personality=personality,
             social_life=social_life
         )
-        
+        chosen_morals = get_contextual_moral_compass(personality)
+        caregiver_profile = get_contextual_caregiver_style(personality, chosen_morals)
+
         return Persona(
             name=get_random_name_by_gender(name_lookup_gender), 
             surname=surname,
@@ -149,7 +155,9 @@ class PersonaGenerator:
             gender=gender, 
             sex=sex, 
             orientation=orientation,
+            
             caregiver_style=random.choice(self.CARE_GIVER_STYLE), 
+            
             physical_traits=physical, 
             personality=personality, 
             region=region, 
@@ -165,7 +173,7 @@ class PersonaGenerator:
             life_goals=random.choice(['Travel the world', 'Achieve financial independence', 'Start a business', 'Find true love', 'Find stability']),
             skills_and_talents=get_weighted_skills(count=2, career=occupation, personality=personality), 
             fears_and_insecurities=get_random_fears(2, personality=personality), 
-            moral_compass=random.choice(['Utilitarian', 'Deontological', 'Virtue Ethics', 'Pragmatic']), 
+            moral_compass=chosen_morals, 
             leisure_activities=random.sample(['Binge-watching TV', 'Reading', 'Gardening', 'Hiking'], k=2), 
             fashion_sense=fashion_sense, 
             technology_use=technology_use,
@@ -189,3 +197,5 @@ if __name__ == "__main__":
     
     save_persona_to_markdown(random_persona, filename)
     print(f"\nSuccess! Generated Local Bio: .{os.sep}{os.path.relpath(filename, script_dir)}")
+
+
