@@ -1,69 +1,109 @@
-# PersonaGenerator
+# **PersonaGenerator**
 
-An advanced, production-grade Python engine designed for high-fidelity synthetic character engineering. Moving away from standard unweighted data arrays, this engine implements a **Persona-Centric Framework for AI Identity Engineering** to ensure deep psychological, operational, and demographic coherence across all output matrices.
+A modular, highly configurable Python framework for generating high-fidelity synthetic character profiles. Designed specifically to supply local, uncensored LLM character engines with deep psychological consistency, visceral physical grounding, and rich behavioral friction.
 
----
+## **⚠️ Content Advisory & Intended Scope**
 
-## 🛠️ Framework Architecture
+This repository contains an identity generation framework designed for local LLM character grounding, adult roleplay environments, and behavioral simulation testing.  
+Generated profiles include complex psychological neuroses, detailed anatomical/somatic markers, explicit sexual orientation preferences, and adult lifestyle parameters. All profiles are purely synthetic, algorithmically weighted, and text-based. For details, see [SENSITIVE\_CONTENT.md](https://www.google.com/search?q=./SENSITIVE_CONTENT.md).
 
-The generator is explicitly decoupled into independent modular components to allow localized optimization, targeted expansion, and clear behavioral auditiability:
+## **Key Architectural Features**
 
-1. **Identity Foundation Layer** (`names.py`, `surnames.py`, `physical_traits.py`)
-   - Handles the demographic baseline. Incorporates a cascading biological sex and age matrix to ensure realistic hair, height, and feature distribution over random assignments.
-2. **Psychological Core** (`fears_and_insecurities.py`, `skills_and_talents.py`, `sexual_preferences.py`)
-   - Uses an algorithmic scoring engine mapped to Enneagram archetypes and personality temperaments. This creates dynamic behavioral vectors instead of flat random samplings.
-3. **Contextual Environment Lens** (`culture_and_geography.py`, `careers_and_finance.py`)
-   - Drives downstream variables deterministically via geographic and systemic anchors. Local accents, regional slang, educational backgrounds, and income ranges conform strictly to realistic regional models.
-4. **Behavioral Alignment Layer** (`social_and_lifestyle.py`, `coachable_topics.py`)
-   - Links attachment styles to relationship statuses, technical competencies, and tailored, forward-looking coaching inquiries satisfying International Coaching Federation (ICF) core standards.
+* **Cascading Core Anchors**: Generates identities bound by core psychological drivers (Enneagram, Temperament, Age, Biological Sex) rather than flat, random assignments.  
+* **Psychodynamic Layering**: Tracks somatic armoring, stress disintegration vectors, and integration pathways.  
+* **Zero-Rework Modular Architecture**: Standalone attribute modules return uniform key-value strings (Dict\[str, str\]) for seamless extensibility and native loop parsing in output renderers.  
+* **Local LLM Grounding**: Outputs structured Markdown files designed to immediately anchor system prompts in complex persona traits, physical micro-expressions, and behavioral flaws.
 
----
+## **System Architecture & Data Flow**
 
-## 🚀 Getting Started
+graph TD  
+    A\[Identity Blueprint\] \--\>|Gender, Sex, Age, Orientation| B\[Physical Traits Engine\]  
+    A \--\>|Sex, Age, Career, Social Life| C\[Personality Core Anchor Dict\]  
+      
+    subgraph Upstream Core Anchors  
+        C \--\>|Enneagram Type| D\[enneagram\_psychodynamics.py\]  
+        C \--\>|Temperament| D  
+        C \--\>|Age & Biological Sex| D  
+    end  
+      
+    subgraph Downstream Dependent Modules  
+        C \--\> E\[quirks.py\]  
+        C \--\> F\[fears\_and\_insecurities.py\]  
+        C \--\> G\[sexual\_preferences.py\]  
+        C \--\> H\[health\_profiles.py\]  
+        C \--\> I\[moral\_compass.py\]  
+        I \--\> J\[caregiver\_profiles.py\]  
+        C \--\> K\[coachable\_topics.py\]  
+        C \--\> L\[skills\_and\_talents.py\]  
+    end
 
-### Project Structure
-```text
-PersonaGenerator/
-├── PersonaGenerator.py          # Primary execution pipeline & orchestration engine
-├── markdown_generator.py        # Structural markdown formatter & tracking token generator
-├── md/                          # Default local output folder for generated bios
-└── [Attribute Modules].py       # Explicit property matrices (Careers, Culture, Skills, etc.)
-```
+    D \--\> M\[Persona Dataclass Engine\]  
+    B \--\> M  
+    E \--\> M  
+    F \--\> M  
+    G \--\> M  
+    H \--\> M  
+    J \--\> M  
+    K \--\> M  
+    L \--\> M  
+      
+    M \--\> N\[markdown\_generator.py\]  
+    N \--\> O\[.md Persona Profile File\]
 
-### Quick Execution
-Ensure you have your environment paths set up properly within your project workspace directory (e.g., `C:\DIST\GitHub-Projects\PersonaGenerator`), then run the core file:
+## **Data Cascading Pipeline Matrix**
 
-```bash
-python.exe .\PersonaGenerator.py
-```
+| Execution Order | Engine / Module Layer | Upstream Input Dependencies | Output Attributes & Tokens | Return Data Type |
+| :---- | :---- | :---- | :---- | :---- |
+| **1\. Identity Blueprint** | PersonaGenerator.py | *Random Uniform Seed* | gender, sex, age, orientation | Primitive Strings |
+| **2\. Environment & Lifestyle** | careers\_and\_finance.py culture\_and\_geography.py social\_and\_lifestyle.py | *None* | occupation, financial\_situation, education, region, cultural\_bg | Dict\[str, str\] & Strings |
+| **3\. Physical Traits Engine** | physical\_traits.py | gender, sex, age, fashion\_sense | Height, body type, facial markers, anatomical features | Dict\[str, str\] |
+| **4\. Core Personality Anchor** | PersonaGenerator.py | enneagram\_type, temperament | favorite\_color, siblings, sense\_of\_humor, social\_behavior | Upstream personality Dict\[str, str\] |
+| **5\. Psychodynamics Engine** | enneagram\_psychodynamics.py | enneagram\_type, temperament, age, sex | Instinctual Subtype, Stress Disintegration, Integration Pathway, Somatic Armoring | Dict\[str, str\] |
+| **6\. Behavioral & Perception** | quirks.py fears\_and\_insecurities.py | personality, fashion\_sense, physical | quirk, body\_image\_perception | Strings inserted into personality |
+| **7\. Preferences Engine** | sexual\_preferences.py | orientation, personality\['enneagram\_type'\] | Kinks, dynamic thresholds, intimacy preferences | Dict\[str, str\] |
+| **8\. Health & Morality Engine** | health\_profiles.py moral\_compass.py caregiver\_profiles.py | age, career, personality, physical | health, moral\_compass, caregiver\_style | Dict\[str, str\] & Strings |
+| **9\. Document Renderer** | markdown\_generator.py | Complete Persona Dataclass Instance | Formatted Markdown File saved to ./md/ | File I/O (.md) |
 
-### Sample Output Matrix
-Every run generates an isolated, unique markdown profile stamped with a precise `Profile Tracking Token` for RAG parsing compatibility:
+## **Repository Directory Structure**
 
-```markdown
-# Persona: Christopher Vance
-**Profile Tracking Token:** [ID-2026-08-20 00:15:32]
+Plaintext  
+PersonaGenerator/  
+├── md/                            \# Generated persona output directory  
+├── PersonaGenerator.py            \# Main orchestrator script & entry point  
+├── enneagram\_psychodynamics.py    \# Psychodynamic, somatic armoring & subtype engine  
+├── caregiver\_profiles.py          \# Contextual caregiving and relational style asset  
+├── careers\_and\_finance.py         \# Career, income tier, and education background asset  
+├── coachable\_topics.py            \# Personal growth and development areas module  
+├── culture\_and\_geography.py       \# Regional and cultural background asset  
+├── fears\_and\_insecurities.py      \# Fears and bodily perception narrative engine  
+├── health\_profiles.py             \# Contextual physical and mental health profiles  
+├── hobbies.py                     \# Weighted hobbies and leisure activities  
+├── markdown\_generator.py          \# Persona dataclass to Markdown exporter  
+├── moral\_compass.py               \# Ethical frameworks and moral drivers asset  
+├── names.py                       \# Gender-aligned given name generator  
+├── physical\_traits.py             \# Anatomical and physical marker generator  
+├── quirks.py                      \# Behavioral quirks and contextual habits module  
+├── sexual\_preferences.py          \# Weighted kink and orientation preference matrix  
+├── skills\_and\_talents.py          \# Weighted skill sets based on career/personality  
+├── social\_and\_lifestyle.py        \# Social style, fashion, and tech usage asset  
+├── surnames.py                    \# Surname database generator  
+├── SENSITIVE\_CONTENT.md           \# Content scope and usage advisory  
+└── README.md                      \# Architecture documentation
 
-## Gender and Biological Sex
-- **Age:** 42
-- **Gender Identity:** cisgender man
-- **Biological Sex:** male
-- **Sexual Orientation:** heterosexual
+## **Quick Start**
 
-## Personality Traits
-- **Enneagram Type:** 8 - The Challenger
-- **Temperament:** Conscientious
-- **Sense of Humor:** Dark
+### **Prerequisites**
 
-## Coachable Topics
-- How can you design your current role so that your impact expands while your baseline energy is actively restored?
-- What would it look like to lean on the strengths of your team, allowing collaboration to replace your protective armor?
-```
+* Python 3.9 or higher
 
----
+### **Installation & Execution**
 
-## 📊 Purpose & Downstream Applications
+Bash  
+\# Clone the repository  
+git clone https://github.com/Mimi-B125/PersonaGenerator.git  
+cd PersonaGenerator
 
-- **Grounding Context for LLMs:** Inject generated bio profiles into custom creative systems (e.g., instances running specialized configurations like `Heretic`) to ensure rock-solid character persistence.
-- **RAG Pre-Loading:** Export structural markdown records directly to localized Vector Knowledge Bases to allow deep character cross-examination via RAG frameworks.
-- **Agent Testing Boundaries:** Create diverse, distinct end-user proxies with predictable biases and conversational boundaries for software stress testing.
+\# Run the generator suite  
+python PersonaGenerator.py
+
+Follow the terminal prompt to specify the number of personas to batch-generate. Output markdown files will be automatically rendered inside the ./md/ directory.  

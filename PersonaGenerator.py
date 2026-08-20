@@ -4,7 +4,7 @@ import time
 from typing import List, Dict
 from dataclasses import dataclass
 
-# Modular Imports
+# Attribute Modules
 from physical_traits import get_random_physical_traits
 from sexual_preferences import get_weighted_sexual_preferences
 from names import get_random_name_by_gender
@@ -13,8 +13,6 @@ from fears_and_insecurities import get_random_fears
 from fears_and_insecurities import get_body_perception_narrative
 from markdown_generator import generate_persona_markdown
 from surnames import get_random_surname
-
-# New Attribute Modules
 from careers_and_finance import get_random_career_profile
 from culture_and_geography import get_random_cultural_profile
 from social_and_lifestyle import get_random_lifestyle_profile
