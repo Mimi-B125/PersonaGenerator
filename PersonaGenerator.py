@@ -10,6 +10,7 @@ from sexual_preferences import get_weighted_sexual_preferences
 from names import get_random_name_by_gender
 from hobbies import get_random_hobbies
 from fears_and_insecurities import get_random_fears
+from fears_and_insecurities import get_body_perception_narrative
 from markdown_generator import generate_persona_markdown
 from surnames import get_random_surname
 
@@ -81,15 +82,9 @@ class PersonaGenerator:
             "Loves knitting", "Always wears mismatched socks", 
             "Talks to plants", "Obsessed with cleanliness"
         ]
-        self.COACHABLE_TOPICS = [
-            "What long-held dream have you been postponing?", 
-            "Are you struggling to break through a personal limitation?",
-            "Do you want to improve your ability to set boundaries or have difficult conversations?",
-            "How can you create more meaningful impact in your current role?"
-        ]
 
     def generate_persona(self) -> Persona:
-        # IDENTITY BLUEPRINT CONFIGURATION
+        # 1. IDENTITY BLUEPRINT CONFIGURATION
         blueprints = [
             ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
             ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
@@ -101,15 +96,17 @@ class PersonaGenerator:
         gender, sex, name_lookup_gender, orientation_pool = random.choice(blueprints)
         orientation = random.choice(orientation_pool)
         assigned_age = random.randint(22, 68)
+
+        # 2. ENVIRONMENT & LIFESTYLE GENERATION
         occupation, financial_situation, education = get_random_career_profile()
         region, region_data, cultural_bg = get_random_cultural_profile()
         social_life, fashion_sense, technology_use = get_random_lifestyle_profile()
-        physical = get_random_physical_traits(sex=sex, age=assigned_age, fashion_sense=fashion_sense)
+
+        # 3. PHYSICAL GENERATION
+        physical = get_random_physical_traits(gender_identity=gender, sex=sex, age=assigned_age, fashion_sense=fashion_sense)
+
+        # 4. PERSONALITY BASE & ENNEAGRAM SELECTION
         enneagram = random.choice(self.PERSONALITY_TRAITS['enneagram_types'])
-        sexual_preferences = get_weighted_sexual_preferences(
-            orientation=orientation, 
-            personality={'enneagram_type': enneagram['type']}
-        )
         personality = {
             'siblings': random.randint(0, 4),
             'favorite_color': random.choice(self.PERSONALITY_TRAITS['favorite_colors']),
@@ -123,6 +120,15 @@ class PersonaGenerator:
             'quirk': random.choice(self.QUIRKS)
         }
 
+        # 5. CROSS-REFERENCE BODILY PERCEPTION (Now safe because personality & physical exist)
+        personality['body_image_perception'] = get_body_perception_narrative(personality, physical)
+
+        # 6. SEX PREFERENCES & TOPICS
+        sexual_preferences = get_weighted_sexual_preferences(
+            orientation=orientation, 
+            personality={'enneagram_type': enneagram['type']}
+        )
+        
         surname = get_random_surname()
         current_timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
         tailored_topics = get_tailored_coachable_topics(personality, count=2)
