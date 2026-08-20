@@ -23,6 +23,8 @@ from skills_and_talents import get_weighted_skills
 from health_profiles import get_contextual_health_profile
 from caregiver_profiles import get_contextual_caregiver_style
 from moral_compass import get_contextual_moral_compass
+from quirks import get_contextual_quirk
+
 
 
 
@@ -78,15 +80,6 @@ class PersonaGenerator:
             'social_behavior': ["Outgoing", "Reserved", "Shy", "Confident"],
             'sense_of_humor': ["Sarcastic", "Dry", "Slapstick", "Witty", "Dark"]
         }
-        self.CARE_GIVER_STYLE = [
-            'Authoritarian/Firm', 'Nurturing/Empathetic', 'Hands-Off/Detached', 
-            'Playful/Engaging', 'Strict/Traditional', 'Overprotective/Cautious', 
-            'Encouraging/Motivational', 'Tough Love/No-Nonsense', 'Chaotic/Unpredictable'
-        ]
-        self.QUIRKS = [
-            "Loves knitting", "Always wears mismatched socks", 
-            "Talks to plants", "Obsessed with cleanliness"
-        ]
 
     def generate_persona(self) -> Persona:
         # 1. IDENTITY BLUEPRINT CONFIGURATION
@@ -122,10 +115,11 @@ class PersonaGenerator:
             'emotional_traits': random.choice(self.PERSONALITY_TRAITS['emotional_traits']),
             'social_behavior': random.choice(self.PERSONALITY_TRAITS['social_behavior']),
             'sense_of_humor': random.choice(self.PERSONALITY_TRAITS['sense_of_humor']),
-            'quirk': random.choice(self.QUIRKS)
+            'quirk': ""
         }
 
         # 5. CROSS-REFERENCE BODILY PERCEPTION (Now safe because personality & physical exist)
+        personality['quirk'] = get_contextual_quirk(personality, fashion_sense)
         personality['body_image_perception'] = get_body_perception_narrative(personality, physical)
 
         # 6. SEX PREFERENCES & TOPICS
