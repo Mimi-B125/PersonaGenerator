@@ -9,7 +9,13 @@ from physical_traits import get_random_physical_traits
 from sexual_preferences import get_random_sexual_preferences
 from names import get_random_name_by_gender
 from hobbies import get_random_hobbies
+from fears_and_insecurities import get_random_fears
 from markdown_generator import generate_persona_markdown
+
+# New Attribute Modules
+from careers_and_finance import get_random_career_profile
+from culture_and_geography import get_random_cultural_profile
+from social_and_lifestyle import get_random_lifestyle_profile
 
 @dataclass
 class Trait:
@@ -49,7 +55,6 @@ class PersonaGenerator:
         random.seed(None)
         self.PERSONALITY_TRAITS = {
             'favorite_colors': ["Blue", "Green", "Red", "Purple", "Yellow", "Black", "Pink"],
-            'occupations': ["Teacher", "Nurse", "Engineer", "Stay-at-home parent", "Chef"],
             'enneagram_types': [
                 {'type': '1 - The Reformer', 'description': 'Principled and perfectionistic', 'core_desire': 'To be good, ethical, and right'},
                 {'type': '2 - The Helper', 'description': 'Caring and people-pleasing', 'core_desire': 'To be loved and needed'},
@@ -66,20 +71,6 @@ class PersonaGenerator:
             'social_behavior': ["Outgoing", "Reserved", "Shy", "Confident"],
             'sense_of_humor': ["Sarcastic", "Dry", "Slapstick", "Witty", "Dark"]
         }
-        self.GENDER_AND_SEX = {
-            'sex': ["female"],
-            'gender_identity': ["woman", "non-binary"],
-            'sexual_orientation': ["heterosexual", "lesbian", "bisexual"]
-        }    
-        self.REGION_OF_ORIGIN = {
-            'Northeast': {'Accents': 'Northeast Accents', 'Slang': 'Bubbler, yous guys'},
-            'Southeast': {'Accents': 'Southern Accent', 'Slang': 'Y’all, fixin’ to'},
-            'Midwest': {'Accents': 'Midwestern English', 'Slang': 'You betcha, pop'},
-            'Southwest': {'Accents': 'Southwestern English', 'Slang': 'Hella, dude'},
-            'West': {'Accents': 'Western American', 'Slang': 'Gnarly, no worries'},
-            'Pacific Northwest': {'Accents': 'Pacific Northwest', 'Slang': 'The 253'},
-            'Upper Midwest': {'Accents': 'Upper Midwest', 'Slang': 'Uff da, Dontcha know'}
-        }
         self.CARE_GIVER_STYLE = [
             'Authoritarian/Firm', 'Nurturing/Empathetic', 'Hands-Off/Detached', 
             'Playful/Engaging', 'Strict/Traditional', 'Overprotective/Cautious', 
@@ -87,62 +78,77 @@ class PersonaGenerator:
         ]
         self.QUIRKS = (
             Trait("Loves knitting", "Enjoys quiet time knitting blankets."),
-            Trait("Afraid of heights", "Gets nervous standing on ladders."),
+            Trait("Always wears mismatched socks", "Has a quirky habit of never wearing matching socks."),
+            Trait("Talks to plants", "Often caught having quiet conversations with houseplants."),
             Trait("Obsessed with cleanliness", "Always keeps everything spotless.")
         )
-        self.SOCIAL_LIFE_AND_RELATIONSHIPS = {
-           'relationship_status': [{"Single": "Not in a relationship."}, {"Complicated": "Unresolved boundaries."}],
-           'relationship_contentment_level': [{"Happy": "Generally satisfied."}, {"Content": "Comfortable."}],
-           'family_dynamics': [{'type': 'Close-knit Family'}, {'type': 'High-conflict Family'}, {'type': 'Absent Caregiver Dynamic'}]
-        }
-        self.FINANCIAL_SITUATION = {
-            'Income level': ["low-income", "middle-class", "wealthy"]
-        }
-        self.COACHABLE_TOPICS = ["What long-held dream have you been postponing?", "Are you struggling to break through a personal limitation?"]
+        self.COACHABLE_TOPICS = [
+            "What long-held dream have you been postponing?", 
+            "Are you struggling to break through a personal limitation?",
+            "Do you want to improve your ability to set boundaries or have difficult conversations?",
+            "How can you create more meaningful impact in your current role?"
+        ]
 
     def generate_persona(self) -> Persona:
-        gender = random.choice(self.GENDER_AND_SEX['gender_identity'])
-        enneagram = random.choice(self.PERSONALITY_TRAITS['enneagram_types'])
-        region = random.choice(list(self.REGION_OF_ORIGIN.keys()))
+        # 1. Blueprint-based Identity framework
+        blueprints = [
+            ("cisgender woman", "female", "woman", ["heterosexual", "lesbian", "bisexual", "pansexual"]),
+            ("cisgender man", "male", "man", ["heterosexual", "homosexual", "bisexual", "pansexual"]),
+            ("transfeminine woman", "male", "woman", ["lesbian", "bisexual", "pansexual", "heterosexual"]),
+            ("transmasculine man", "female", "man", ["homosexual", "bisexual", "pansexual", "heterosexual"]),
+            ("non-binary (feminine-aligned)", "female", "non-binary", ["lesbian", "bisexual", "pansexual", "queer"]),
+            ("non-binary (masculine-aligned)", "male", "non-binary", ["homosexual", "bisexual", "pansexual", "queer"]),
+            ("agender", random.choice(["male", "female"]), "non-binary", ["asexual", "pansexual", "bisexual", "queer"])
+        ]
+        gender, sex, name_lookup_gender, orientation_pool = random.choice(blueprints)
         
+        # 2. Fire dynamic external database selection modules
+        occupation, financial_situation, education = get_random_career_profile()
+        region, region_data, cultural_bg = get_random_cultural_profile()
+        social_life, fashion_sense, technology_use = get_random_lifestyle_profile()
+        
+        enneagram = random.choice(self.PERSONALITY_TRAITS['enneagram_types'])
         personality = {
             'siblings': random.randint(0, 4),
             'favorite_color': random.choice(self.PERSONALITY_TRAITS['favorite_colors']),
-            'occupation': random.choice(self.PERSONALITY_TRAITS['occupations']),
+            'occupation': occupation,
             'enneagram_type': enneagram['type'],
             'enneagram_description': enneagram['description'],
             'temperament': random.choice(self.PERSONALITY_TRAITS['temperament']),
             'emotional_traits': random.choice(self.PERSONALITY_TRAITS['emotional_traits']),
             'social_behavior': random.choice(self.PERSONALITY_TRAITS['social_behavior']),
-            'sense_of_humor': random.choice(self.PERSONALITY_TRAITS['sense_of_humor'])
+            'sense_of_humor': random.choice(self.PERSONALITY_TRAITS['sense_of_humor']),
+            'quirk': random.choice(self.QUIRKS).name
         }
 
-        # Safe extraction of dictionary structures
-        chosen_status_dict = random.choice(self.SOCIAL_LIFE_AND_RELATIONSHIPS['relationship_status'])
-        status_key = list(chosen_status_dict.keys())[0]
-        status_desc = chosen_status_dict[status_key]
-
-        chosen_content_dict = random.choice(self.SOCIAL_LIFE_AND_RELATIONSHIPS['relationship_contentment_level'])
-        content_key = list(chosen_content_dict.keys())[0]
-        content_desc = chosen_content_dict[content_key]
-
         return Persona(
-            name=get_random_name_by_gender(gender), gender=gender, 
-            sex=random.choice(self.GENDER_AND_SEX['sex']), orientation=random.choice(self.GENDER_AND_SEX['sexual_orientation']),
-            caregiver_style=random.choice(self.CARE_GIVER_STYLE), physical_traits=get_random_physical_traits(),
-            personality=personality, region=region, kink_preferences=get_random_sexual_preferences(),
+            name=get_random_name_by_gender(name_lookup_gender), 
+            gender=gender, 
+            sex=sex, 
+            orientation=random.choice(orientation_pool),
+            caregiver_style=random.choice(self.CARE_GIVER_STYLE), 
+            physical_traits=get_random_physical_traits(), 
+            personality=personality, 
+            region=region, 
+            kink_preferences=get_random_sexual_preferences(), 
             hobbies=get_random_hobbies(2),
-            cultural_background={'ethnicity': 'Caucasian', 'religion': 'Agnostic', 'languages': ['English']},
-            education='Bachelor\'s Degree', career=personality['occupation'],
-            social_life={
-                'Relationship Status': f"{status_key} ({status_desc})",
-                'Contentment Level': f"{content_key} ({content_desc})",
-                'Family Dynamics': random.choice(self.SOCIAL_LIFE_AND_RELATIONSHIPS['family_dynamics'])['type']
-            },
-            financial_situation=random.choice(self.FINANCIAL_SITUATION['Income level']),
-            health={'Physical Health': 'Good', 'Mental Health': 'Fair'}, political_views='Independent', life_goals='Find stability',
-            skills_and_talents=['Writing'], fears_and_insecurities=[random.choice(self.QUIRKS).name],
-            moral_compass='Pragmatic', leisure_activities=['Reading'], fashion_sense='Casual', technology_use='Intermediate',
+            cultural_background=cultural_bg,
+            education=education, 
+            career=occupation,
+            social_life=social_life,
+            financial_situation=financial_situation,
+            health={
+                'Physical Health': random.choice(['Good', 'Fair', 'Poor']), 
+                'Mental Health': random.choice(['Good', 'Fair', 'Poor'])
+            }, 
+            political_views=random.choice(['Liberal', 'Conservative', 'Moderate', 'Independent']), 
+            life_goals=random.choice(['Travel the world', 'Achieve financial independence', 'Start a business', 'Find true love', 'Find stability']),
+            skills_and_talents=random.sample(['Cooking', 'Painting', 'Writing', 'Dancing', 'Programming'], k=2), 
+            fears_and_insecurities=get_random_fears(2), 
+            moral_compass=random.choice(['Utilitarian', 'Deontological', 'Virtue Ethics', 'Pragmatic']), 
+            leisure_activities=random.sample(['Binge-watching TV', 'Reading', 'Gardening', 'Hiking'], k=2), 
+            fashion_sense=fashion_sense, 
+            technology_use=technology_use,
             coachable_topics=random.sample(self.COACHABLE_TOPICS, k=min(2, len(self.COACHABLE_TOPICS)))
         )
 
@@ -163,4 +169,5 @@ if __name__ == "__main__":
     filename = os.path.join(target_dir, f"{random_persona.name}_{timestamp}_persona.md")
     
     save_persona_to_markdown(random_persona, filename)
-    print(f"\n✨ Generated Local Bio: .{os.sep}{os.path.relpath(filename, script_dir)}")
+    print(f"\nSuccess! Generated Local Bio: .{os.sep}{os.path.relpath(filename, script_dir)}")
+
