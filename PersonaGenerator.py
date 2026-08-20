@@ -187,15 +187,31 @@ def save_persona_to_markdown(persona, filename):
 
 if __name__ == "__main__":
     generator = PersonaGenerator()
-    random_persona = generator.generate_persona()
     
+    # Establish local filesystem directories
     script_dir = os.path.dirname(os.path.abspath(__file__))
     target_dir = os.path.join(script_dir, "md")
     os.makedirs(target_dir, exist_ok=True)
     
-    filename = os.path.join(target_dir, f"{random_persona.name}_{random_persona.surname}_persona.md")
+    # User loop parameter query
+    try:
+        user_input = input("Enter the number of personas to generate [Default: 1]: ").strip()
+        count = int(user_input) if user_input else 1
+        if count < 1:
+            count = 1
+    except ValueError:
+        print("Invalid input detected. Defaulting to 1 persona profile.")
+        count = 1
+
+    print(f"\nInitializing bulk generation suite: Processing {count} identities...")
     
-    save_persona_to_markdown(random_persona, filename)
-    print(f"\nSuccess! Generated Local Bio: .{os.sep}{os.path.relpath(filename, script_dir)}")
-
-
+    for i in range(count):
+        random_persona = generator.generate_persona()
+        filename = os.path.join(target_dir, f"{random_persona.name}_{random_persona.surname}_persona.md")
+        
+        save_persona_to_markdown(random_persona, filename)
+        
+        # Display clean progress markers per creation
+        print(f" [{i+1}/{count}] Generated: {random_persona.name} {random_persona.surname}")
+        
+    print(f"\nExecution Complete! Created markdown records inside directory: .{os.sep}md")
